@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 
 API_HEADER = """
-const char *decode(const char *msg);
+extern char *decode(char *msg);
 
 """
 class Config:
@@ -49,6 +49,11 @@ def main():
     ffibuilder = cffi.FFI()
 
     ffibuilder.embedding_api(API_HEADER)
+    ffibuilder.set_source(
+        config.get_lib_name(),
+        "",
+    )
+    #ffibuilder.cdef(API_HEADER)
 
     source = []
     model_list = [Path(x) for x in config.get_model_utilities()]
@@ -61,7 +66,8 @@ def main():
             code = f.read()
             source.append(code + "\n")
 
-    ffibuilder.embedding_init_code(source)
+    print(source)
+    ffibuilder.embedding_init_code("".join(source))
 
     target_name = config.get_lib_name() + ".*"
     ffibuilder.compile(target=target_name, verbose=True)

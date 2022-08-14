@@ -1,8 +1,9 @@
 OUT_DIR ?= $(abspath .)
 
 PY ?= python3
+CC ?= gcc
 
-.PHONY: default all clean format
+.PHONY: all clean format
 
 PY_FILES := $(wildcard *.py)
 
@@ -11,14 +12,14 @@ PY_FILES := $(wildcard *.py)
 
 format: $(PY_FILES)
 
+build: test.c
+	gcc test.c -L. -l harness -o test
+
 harness:
 	-rm -rf $(OUT_DIR)/libharness.so
 	$(PY) harness.py $(OUT_DIR) libharness.so
 
-default: harness
-
-
-all: default
+all: harness build
 
 clean:
 	-rm -rf libharness.so
