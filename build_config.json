@@ -1,0 +1,11 @@
+{
+    "headers_dir": "headers/",
+    "models_dir": "models/",
+    "lib_name": "libharness",
+
+    "model_utilities": [
+        "models/core.py"
+    ],
+
+    "bundled_utilities": []
+}
