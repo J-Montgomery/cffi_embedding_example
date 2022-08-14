@@ -3,7 +3,7 @@
 extern char *decode(char *msg);
 
 int main() {
-    char *msg = decode(0);
-    printf("msg: %s\n", msg);
-    return 0;
+  char *msg = decode(0);
+  printf("msg: %s\n", msg);
+  return 0;
 }

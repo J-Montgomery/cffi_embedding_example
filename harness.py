@@ -9,6 +9,8 @@ API_HEADER = """
 extern char *decode(char *msg);
 
 """
+
+
 class Config:
     def __init__(self, config_path):
         with open(config_path) as configfile:
@@ -38,22 +40,24 @@ class Config:
         else:
             return []
 
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("output_dir")
     parser.add_argument("model_name")
-    parser.add_argument("-c", "--config", help="JSON file containing build config", default="build_config.json")
+    parser.add_argument(
+        "-c",
+        "--config",
+        help="JSON file containing build config",
+        default="build_config.json",
+    )
     args = parser.parse_args()
 
     config = Config(args.config)
     ffibuilder = cffi.FFI()
 
     ffibuilder.embedding_api(API_HEADER)
-    ffibuilder.set_source(
-        config.get_lib_name(),
-        "",
-    )
-    #ffibuilder.cdef(API_HEADER)
+    ffibuilder.set_source(config.get_lib_name(), "")
 
     source = []
     model_list = [Path(x) for x in config.get_model_utilities()]
@@ -71,6 +75,7 @@ def main():
 
     target_name = config.get_lib_name() + ".*"
     ffibuilder.compile(target=target_name, verbose=True)
+
 
 if __name__ == "__main__":
     main()
